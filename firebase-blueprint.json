@@ -1,0 +1,125 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Core user information and fitness profile",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "admin", "trainer"] },
+        "fitnessGoals": { "type": "array", "items": { "type": "string" } },
+        "height": { "type": "number", "description": "cm" },
+        "weight": { "type": "number", "description": "kg" },
+        "targetWeight": { "type": "number", "description": "kg" },
+        "bmi": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "streak": { "type": "integer", "default": 0 }
+      },
+      "required": ["userId", "email", "role"]
+    },
+    "Workout": {
+      "title": "Workout Plan",
+      "description": "Pre-defined or AI-generated workout routines",
+      "type": "object",
+      "properties": {
+        "workoutId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "level": { "type": "string", "enum": ["beginner", "intermediate", "advanced"] },
+        "duration": { "type": "integer", "description": "minutes" },
+        "exercises": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "sets": { "type": "integer" },
+              "reps": { "type": "string" },
+              "videoUrl": { "type": "string" }
+            }
+          }
+        },
+        "isAI": { "type": "boolean" },
+        "category": { "type": "string" }
+      }
+    },
+    "Log": {
+      "title": "Activity Log",
+      "description": "Daily tracking log for various metrics",
+      "type": "object",
+      "properties": {
+        "logId": { "type": "string" },
+        "userId": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "type": { "type": "string", "enum": ["workout", "meal", "water", "weight", "sleep", "steps"] },
+        "value": { "type": "number" },
+        "unit": { "type": "string" },
+        "details": { "type": "object" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Post": {
+      "title": "Community Post",
+      "description": "Social feed content from users",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "userId": { "type": "string" },
+        "content": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "likes": { "type": "integer", "default": 0 },
+        "comments": { "type": "array", "items": { "type": "object" } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Subscription": {
+      "title": "User Subscription",
+      "description": "Managed subscription plans and status",
+      "type": "object",
+      "properties": {
+        "subscriptionId": { "type": "string" },
+        "userId": { "type": "string" },
+        "plan": { "type": "string", "enum": ["free", "premium_monthly", "premium_yearly"] },
+        "status": { "type": "string", "enum": ["active", "cancelled", "expired"] },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and settings"
+    },
+    "/workouts/{workoutId}": {
+      "schema": "Workout",
+      "description": "Library of workout routines"
+    },
+    "/users/{userId}/logs/{logId}": {
+      "schema": "Log",
+      "description": "User activity tracking history"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Community social feed posts"
+    },
+    "/subscriptions/{subscriptionId}": {
+      "schema": "Subscription",
+      "description": "Platform subscription management"
+    },
+    "/admin_stats/overview": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "totalUsers": { "type": "integer" },
+          "monthlyRevenue": { "type": "number" },
+          "dau": { "type": "integer" }
+        }
+      },
+      "description": "Aggregated platform analytics for admin only"
+    }
+  }
+}

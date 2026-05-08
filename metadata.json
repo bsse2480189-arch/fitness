@@ -1,0 +1,14 @@
+{
+  "name": "FitForge Pro",
+  "description": "AI-powered premium fitness management platform with personalized workout engineering, nutritional tracking, and a high-performance community.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "AI-driven workout generation",
+    "Real-time bio-metric tracking",
+    "Community social feed",
+    "Admin business analytics"
+  ]
+}
